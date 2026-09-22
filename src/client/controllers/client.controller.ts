@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger } from '@nestjs/common';
+import { Body, Controller, Logger, Post } from '@nestjs/common';
 import { ClientService } from '../services/client.service';
 import { ClientRequestDto } from '../dto/ClientRequestDto';
 
@@ -8,7 +8,7 @@ export class ClientController {
 
   private readonly logger = new Logger(ClientController.name);
 
-  @Get('getResults')
+  @Post('getResults')
   getResult(@Body() qRequest: ClientRequestDto): Promise<any> {
     this.logger.log('Received: Get search results...');
     return this.clientService.getResult(qRequest);

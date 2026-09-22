@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable prettier/prettier */
+import 'dotenv/config';
 import { HttpService } from '@nestjs/axios';
 import {
   Injectable,
@@ -20,7 +21,7 @@ export class ClientService {
         this.httpService.request({
           method: 'GET',
           url: 'https://serpapi.com/search',
-          data: {
+          params: {
             engine: qRepo.engine,
             q: qRepo.q,
             location: qRepo.location,
