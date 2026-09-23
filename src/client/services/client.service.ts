@@ -110,7 +110,8 @@ export class ClientService {
       order: { id: 'DESC' },
     });
 
-    if (!search) throw new NotFoundException('No search history available!!');
+    if (search.length == 0)
+      throw new NotFoundException('No search history available!!');
     return search;
   }
 }
