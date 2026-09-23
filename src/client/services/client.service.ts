@@ -6,13 +6,14 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { Repository } from 'typeorm';
 import { SearchEntity } from 'src/user/entities/search.entity';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ClientRequestDto } from '../dto/ClientRequest.dto';
+import { ClientRequestDto } from '../dto/ClientRequestDto';
 
 @Injectable()
 export class ClientService {
@@ -97,5 +98,19 @@ export class ClientService {
         error: error,
       });
     }
+  }
+
+  async getHistory(userEmail: string) {
+    const user = await this.userRepository.findOneBy({ email: userEmail });
+
+    if (!user) throw new ConflictException("User doesn't exsist!!");
+
+    const search = await this.searchRepository.find({
+      where: { user: { email: userEmail } },
+      order: { id: 'DESC' },
+    });
+
+    if (!search) throw new NotFoundException('No search history available!!');
+    return search;
   }
 }
